@@ -8,40 +8,47 @@
     <div class="container">
         <h1>📝 Task Manager</h1>
 
-        <!-- Add New Task -->
+        <!-- Add Task -->
         <form action="/add" method="post" class="task-form">
-            <input type="text" name="task" placeholder="Enter new task" required>
+            <input type="text" name="task" placeholder="New Task" required>
             <button type="submit">Add Task</button>
         </form>
 
-        <!-- Clear All Tasks -->
+        <!-- Clear All -->
         {% if tasks %}
         <form action="/clear" method="post" style="margin-top: 10px;">
             <button type="submit" style="background-color: crimson;">Clear All Tasks</button>
         </form>
         {% endif %}
 
-        <!-- Task List -->
-        {% if tasks %}
-            <ul class="task-list">
-                {% for task in tasks %}
-                <li>
-                    <form action="/update" method="post" class="inline-form">
-                        <input type="hidden" name="task_index" value="{{ loop.index0 }}">
-                        <input type="text" name="new_task" value="{{ task }}" required>
-                        <button type="submit">Update</button>
-                    </form>
+        <!-- Tasks List -->
+        <ul class="task-list">
+            {% for task in tasks %}
+            <li>
+                <!-- Toggle done -->
+                <form action="/toggle" method="post" class="inline-form">
+                    <input type="hidden" name="task_index" value="{{ loop.index0 }}">
+                    <button type="submit" style="background-color: {{ 'green' if task.done else '#888' }}">
+                        {{ "✓" if task.done else "○" }}
+                    </button>
+                </form>
 
-                    <form action="/delete" method="post" class="inline-form">
-                        <input type="hidden" name="task_index" value="{{ loop.index0 }}">
-                        <button type="submit" style="background-color: #e74c3c;">Delete</button>
-                    </form>
-                </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No tasks added yet.</p>
-        {% endif %}
+                <!-- Update -->
+                <form action="/update" method="post" class="inline-form">
+                    <input type="hidden" name="task_index" value="{{ loop.index0 }}">
+                    <input type="text" name="new_task" value="{{ task.name }}" required
+                           class="{{ 'done-task' if task.done else '' }}">
+                    <button type="submit">Update</button>
+                </form>
+
+                <!-- Delete -->
+                <form action="/delete" method="post" class="inline-form">
+                    <input type="hidden" name="task_index" value="{{ loop.index0 }}">
+                    <button type="submit" style="background-color: #e74c3c;">Delete</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
 </body>
 </html>

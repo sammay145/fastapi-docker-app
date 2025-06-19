@@ -56,3 +56,8 @@ h1 {
     display: inline-block;
     margin: 5px;
 }
+
+.done-task {
+    text-decoration: line-through;
+    color: gray;
+}
