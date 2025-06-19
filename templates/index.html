@@ -1,27 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ToDo App</title>
+    <title>Task Manager</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>📝 My ToDo List</h1>
+    <div class="container">
+        <h1>📝 Task Manager</h1>
 
-    <form action="/add" method="post">
-        <input type="text" name="task" placeholder="Enter a task..." required>
-        <button type="submit">Add</button>
-    </form>
+        <!-- Add New Task -->
+        <form action="/add" method="post" class="task-form">
+            <input type="text" name="task" placeholder="Enter new task" required>
+            <button type="submit">Add Task</button>
+        </form>
 
-    <ul>
-        {% for task in tasks %}
-            <li>
-                {{ task }}
-                <form action="/delete" method="post" style="display:inline;">
-                    <input type="hidden" name="task_index" value="{{ loop.index0 }}">
-                    <button type="submit">❌</button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
+        <!-- Clear All Tasks -->
+        {% if tasks %}
+        <form action="/clear" method="post" style="margin-top: 10px;">
+            <button type="submit" style="background-color: crimson;">Clear All Tasks</button>
+        </form>
+        {% endif %}
+
+        <!-- Task List -->
+        {% if tasks %}
+            <ul class="task-list">
+                {% for task in tasks %}
+                <li>
+                    <form action="/update" method="post" class="inline-form">
+                        <input type="hidden" name="task_index" value="{{ loop.index0 }}">
+                        <input type="text" name="new_task" value="{{ task }}" required>
+                        <button type="submit">Update</button>
+                    </form>
+
+                    <form action="/delete" method="post" class="inline-form">
+                        <input type="hidden" name="task_index" value="{{ loop.index0 }}">
+                        <button type="submit" style="background-color: #e74c3c;">Delete</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No tasks added yet.</p>
+        {% endif %}
+    </div>
 </body>
 </html>
