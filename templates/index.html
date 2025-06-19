@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ToDo App</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>📝 My ToDo List</h1>
+
+    <form action="/add" method="post">
+        <input type="text" name="task" placeholder="Enter a task..." required>
+        <button type="submit">Add</button>
+    </form>
+
+    <ul>
+        {% for task in tasks %}
+            <li>
+                {{ task }}
+                <form action="/delete" method="post" style="display:inline;">
+                    <input type="hidden" name="task_index" value="{{ loop.index0 }}">
+                    <button type="submit">❌</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
